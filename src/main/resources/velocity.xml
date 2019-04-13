@@ -13,7 +13,7 @@
     <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
         <property name="cache" value="false"/>
         <property name="prefix" value="/templates/"/><!-- 视图前缀 文件路径 -->
-        <property name="suffix" value=".vm"/><!-- 视图后缀 -->
+        <property name="suffix" value=".html"/><!-- 视图后缀 -->
         <property name="numberToolAttribute" value="number"/><!-- 数字函数名称 -->
         <property name="dateToolAttribute" value="date"/><!-- 日期函数名称 -->
         <property name="contentType" value="text/html;charset=UTF-8"/>
