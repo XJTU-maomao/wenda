@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * Created by Saber on 2018/2/24 下午1:13
  */
-@Controller
+//@Controller
 public class IndexController {
 
     @Autowired
