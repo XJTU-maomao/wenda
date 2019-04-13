@@ -1,17 +1,21 @@
 package com.nowcoder.controller;
 
 import com.nowcoder.model.User;
+import com.nowcoder.service.WendaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 
 /**
@@ -20,6 +24,8 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
+    @Autowired
+    WendaService wendaService;
     /**
      * 首页
      *
@@ -27,8 +33,8 @@ public class IndexController {
      */
     @RequestMapping(value = {"/","/index"},method = {RequestMethod.GET})
     @ResponseBody
-    public String index(){
-        return "Hello NowCoder";
+    public String index(HttpSession session){
+        return wendaService.getMessage(2)+" Hello NowCoder  "+session.getAttribute("msg");
 //        return "index";
     }
 
@@ -55,9 +61,58 @@ public class IndexController {
         return "home";
     }
 
+    @RequestMapping(path = {"/request"},method = {RequestMethod.GET})
+    @ResponseBody
+    public String request(Model model, HttpServletResponse response,
+                          HttpServletRequest request, HttpSession session,
+                          @CookieValue("JSESSIONID") String sessionId){
+        StringBuilder sb = new StringBuilder();
+        sb.append("COOKIEVALUE: "+sessionId);
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+            String name = headerNames.nextElement();
+            sb.append(name + " : " + request.getHeader(name) +"<br>");
+        }
+        if (request.getCookies() != null){
+            for(Cookie cookie : request.getCookies()){
+                sb.append("Cookie: " + cookie.getName()+" value: "+cookie.getValue());
+            }
+        }
+        sb.append(request.getMethod() + "</br>");
+        sb.append(request.getRequestURI() +"<br>");
+        sb.append(request.getPathInfo()+"<br>");
+        sb.append(request.getQueryString()+"<br>");
 
+        response.addHeader("nowcoderId", "hello");
+        response.addCookie(new Cookie("username", "nowcoder"));
+//        response.getOutputStream().write();
+        return sb.toString();
+    }
 
+    @RequestMapping(path = {"/redirect/{code}"},method = {RequestMethod.GET})
+    public RedirectView redirect(@PathVariable("code") int code,
+                                 HttpSession session){
+        session.setAttribute("msg", "jump from redirect");
+        RedirectView view = new RedirectView("/",true);
+        if (code == 301){
+            view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        }
+        return view;
+    }
 
+    @RequestMapping(path = {"/admin"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public String admin(@RequestParam("key") String key){
+        if ("admin".equals(key))
+            return "hello , admin";
+        throw new IllegalArgumentException("参数不对");
+    }
+
+    @ExceptionHandler()
+    @ResponseBody
+    public String error(Exception e){
+        return "error : "+e.getMessage();
+    }
 
 
 

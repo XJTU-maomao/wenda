@@ -28,9 +28,29 @@
 
         User: $!{user.name}
         $!{user.getName()}
+        $!{user.description}
 
         #set($title = "nowcoder")
         $!{title}
+
+
+        #macro (render_color, $index, $color)
+            Color Render Macro $index, $color
+        #end
+
+        #foreach($color in $colors)
+            #render_color($foreach.index, $color)
+        #end
+
+        #set($hello = "hello")
+        #set($helloWorld1 = "${hello} world!")
+        #set($helloWorld2 = '${hello} world!')
+
+        $!{helloWorld1}
+        $!{helloWorld2}
+        <!--注意下面这个路径-->
+        Parse: #parse("/templates/name.html")
+        Include: #include("/templates/name.html")
     </pre>
 </body>
 </html>
