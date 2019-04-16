@@ -1,56 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>home</title>
-</head>
+<html>
 <body>
-    <div>home</div>
-    <pre>
-        #*
-        块注释
-        *#
-        $!{value1}
-        $!{value2} ##如果不存在 强制为空
-        ${value3}
-        colors:$!{colors}
+<pre>
+    #*
+    你看不到我~~~~
+    *#
+    $!{value1}
+    $!{value2} ## 如果不存在，强制为空
+    ${value3}
 
-        #foreach($color in $colors)
-            This is Color $!{foreach.index}: $color , $!{foreach.count}
-        #end
+    colors: $!{colors}
 
-        #foreach($key in $map.keySet())
-            Number:$key, Value:$map.get($key)
-        #end
-        #foreach($kv in $map.entrySet())
-            Number:$kv.key, Value:$kv.value
-        #end
+    #foreach($color in $colors)
+        This is Color $!{foreach.index}: $color, $!{foreach.count}
+    #end
 
-        User: $!{user.name}
-        $!{user.getName()}
-        $!{user.description}
+    #foreach($key in $map.keySet())
+        Number: $key, Value: $map.get($key)
+    #end
 
-        #set($title = "nowcoder")
-        $!{title}
+    #foreach($kv in $map.entrySet())
+        Number: $kv.key, Value: $kv.value
+    #end
+
+    User:  $!{user.name}
+    $!{user.description}
+    $!{user.getDescription()}
+
+    #set($title = "nowcoder_title")
+    Title: $!{title}
 
 
-        #macro (render_color, $index, $color)
-            Color Render Macro $index, $color
-        #end
+    Parse: #parse("header.html")
+    Include: #include("header.html")
 
-        #foreach($color in $colors)
-            #render_color($foreach.index, $color)
-        #end
+    #macro (render_color, $index, $color)
+        Color Render Macro $index, $color
+    #end
 
-        #set($hello = "hello")
-        #set($helloWorld1 = "${hello} world!")
-        #set($helloWorld2 = '${hello} world!')
+    #foreach($color in $colors)
+        #render_color($foreach.index, $color)
+    #end
 
-        $!{helloWorld1}
-        $!{helloWorld2}
-        <!--注意下面这个路径-->
-        Parse: #parse("/templates/name.html")
-        Include: #include("/templates/name.html")
-    </pre>
+    #set($hello = "hello")
+    #set($helloworld1 = "$!{hello} world")
+    $!hello
+    $helloworld1
+    #set($helloworld2 = '$!{hello} world')
+    $helloworld2
+
+
+
+
+
+</pre>
 </body>
 </html>
