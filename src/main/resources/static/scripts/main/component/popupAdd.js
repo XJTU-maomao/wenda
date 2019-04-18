@@ -1,8 +1,3 @@
-/*
- * Created by maomao at Xi'an Jiaotong University
- * Copyright (c) 19-4-17 上午10:05;
- */
-
 /**
 var oPopupAdd = new PopupAdd({
     data: 初始数据
@@ -69,8 +64,8 @@ var oPopupAdd = new PopupAdd({
                 var oData = oAdd.val();
                 if (!oData.title) {
                     that.error('请填写标题');
-                    return true
-                };
+                    return true;
+                }
                 // 避免重复提交
                 if (bSubmit) {
                     return true;
