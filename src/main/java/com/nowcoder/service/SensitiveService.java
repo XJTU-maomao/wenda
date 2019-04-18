@@ -164,7 +164,7 @@ public class SensitiveService implements InitializingBean {
             String lineTxt;
             while ((lineTxt = bufferedReader.readLine()) != null){
                 lineTxt = lineTxt.trim();
-                System.out.println(lineTxt);
+//                System.out.println(lineTxt);
                 addWord(lineTxt);
             }
             read.close();
@@ -173,9 +173,9 @@ public class SensitiveService implements InitializingBean {
         }
     }
 
-    public static void main(String[] args) throws Exception{
-        SensitiveService s = new SensitiveService();
-        s.afterPropertiesSet();
-        System.out.println(s.filter("你好X色**情XX色情"));
-    }
+//    public static void main(String[] args) throws Exception{
+//        SensitiveService s = new SensitiveService();
+//        s.afterPropertiesSet();
+//        System.out.println(s.filter("你好X色**情XX色情"));
+//    }
 }
