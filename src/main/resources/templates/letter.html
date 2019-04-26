@@ -12,7 +12,7 @@
                             <!--<a href="javascript:void(0);" class="sns-action-del" data-id="10005_622873">
                             删除
                             </a>-->
-                            <a href="/msg/detail?$conversation.message.conversationId">
+                            <a href="/msg/detail?conversationId=$conversation.message.conversationId">
                                 共$conversation.message.id条会话
                             </a>
                         </div>
@@ -22,12 +22,12 @@
                             $conversation.unread
                         </span>
                         <a class="list-head">
-                            <img alt="头像" src="$conversation.user.headUrl">
+                            <img alt="头像" src="${conversation.sendUser.headUrl}">
                         </a>
                     </div>
                     <div class="letter-detail">
                         <a title="通知" class="letter-name level-color-1">
-                            $conversation.user.name
+                            $conversation.sendUser.name
                         </a>
                         <p class="letter-brief">
                             $conversation.message.content
@@ -39,5 +39,6 @@
 
         </div>
     </div>
-
+#parse("templates/js.html")
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
 #parse("templates/footer.html")

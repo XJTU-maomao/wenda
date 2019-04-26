@@ -50,12 +50,15 @@ public class MessageController {
             int localUserId = hostHolder.getUser().getId();
             List<ViewObject> conversations = new ArrayList<ViewObject>();
             List<Message> conversationList = messageService.getConversationList(localUserId, 0, 10);
+            logger.info("conversationList : " + conversationList.size());
             for (Message msg : conversationList) {
                 ViewObject vo = new ViewObject();
-                vo.set("conversation", msg);
+                vo.set("message", msg);
                 int targetId = msg.getFromId() == localUserId ? msg.getToId() : msg.getFromId();
-                User user = userService.getUser(targetId);
-                vo.set("user", user);
+                User targetUser = userService.getUser(targetId);
+                User senderUser = userService.getUser(msg.getFromId());
+                vo.set("targetUser", targetUser);
+                vo.set("sendUser", senderUser);
                 vo.set("unread", messageService.getConversationUnreadCount(localUserId, msg.getConversationId()));
                 conversations.add(vo);
             }
@@ -67,19 +70,14 @@ public class MessageController {
     }
 
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
-    public String conversationDetail(Model model, @Param("conversationId") String conversationId) {
+    public String conversationDetail(Model model, @RequestParam("conversationId") String conversationId) {
         try {
-            List<Message> conversationList = messageService.getConversationDetail(conversationId, 0, 10);
+            List<Message> messageList = messageService.getConversationDetail(conversationId, 0, 10);
             List<ViewObject> messages = new ArrayList<>();
-            for (Message msg : conversationList) {
+            for (Message msg : messageList) {
                 ViewObject vo = new ViewObject();
                 vo.set("message", msg);
-                User user = userService.getUser(msg.getFromId());
-                if (user == null) {
-                    continue;
-                }
-                vo.set("headUrl", user.getHeadUrl());
-                vo.set("userId", user.getId());
+                vo.set("user", userService.getUser(msg.getFromId()));
                 messages.add(vo);
             }
             model.addAttribute("messages", messages);
